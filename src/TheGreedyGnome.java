@@ -3,9 +3,6 @@
 // Semester: 2021B
 // Assignment: Group Project
 // Authors: Quach Gia Vi (3757317), Bui Manh Dai Duong (s3757278), Nguyen Bao Tri (s3749560)
-// Created date: 30/11/2021
-// Last modified date: 26/12/2021
-
 
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
@@ -15,7 +12,6 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.List;
 import java.util.Collections;
-
 
 public class TheGreedyGnome {
     public int x = 0;
@@ -145,7 +141,7 @@ public class TheGreedyGnome {
         if (x < 0 || x >= col_count || y < 0 || y >= row_count) {
             return false;
         }
-        return !this.map[this.y][this.x].equals("X");
+        return !this.map[y][x].equals("X");
     }
 
     // display mine map
