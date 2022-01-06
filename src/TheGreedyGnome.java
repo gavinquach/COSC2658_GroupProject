@@ -541,6 +541,15 @@ public class TheGreedyGnome {
 //        if (noGold) this.isStuck = true;
 //    }
 
+//    // return true if row has gold
+//    // return false otherwise
+//    private boolean rowHasGold(final int row) {
+//        for (int i = 0; i < this.col_count; i++)
+//            if (isInteger(this.map[row][i]) && (i != this.x || row != this.y))
+//                return true;
+//        return false;
+//    }
+
     // display path taken by the gnome
     public void displayPath() {
         for (int i = 0; i < this.row_count; i++) {
@@ -555,20 +564,10 @@ public class TheGreedyGnome {
         }
     }
 
-    // return true if row has gold
-    // return false otherwise
-    private boolean rowHasGold(final int row) {
-        for (int i = 0; i < this.col_count; i++)
-            if (isInteger(this.map[row][i]) && (i != this.x || row != this.y))
-                return true;
-        return false;
-    }
-
     // add all reachable gold locations
     private ArrayList<Coordinate> getAllGoldLocations() {
         ArrayList<Coordinate> arr = new ArrayList<>();
         for (int i = this.y; i < this.row_count; i++) {
-            if (!rowHasGold(i)) continue;
             for (int j = this.x; j < this.col_count; j++) {
                 if (!isInteger(this.map[i][j]) || i == 0 && j == 0) continue;
 
