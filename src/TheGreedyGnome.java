@@ -26,6 +26,7 @@ public class TheGreedyGnome {
     public String stepsText = "";
 //    public boolean isStuck = false;
     public GnomePath gnomePath;
+    private boolean hasGold;
 
     // down or right directions only
     private static final int[][] DIRECTIONS = { { 0, 1 }, { 1, 0 } };
@@ -99,6 +100,12 @@ public class TheGreedyGnome {
     // actual constructor
     public TheGreedyGnome(String filename) {
         this.readMap(filename);
+        if (this.hasGold) {
+            this.init();
+            this.getBestPath();
+        } else {
+            System.out.println("No gold found in map!");
+        }
     }
 
     // open mine map file, validate the data, then create array of the map
@@ -117,16 +124,17 @@ public class TheGreedyGnome {
                 this.map = new String[this.row_count][this.col_count];
             }
 
+            this.hasGold = false;
             int row = 0;
-            while (file.hasNextLine()) {
-                String data = file.nextLine();
-                for (int i = 0; i < data.length(); i++) {
-                    this.map[row][i] = String.valueOf(data.charAt(i)).toUpperCase();
+            while (file.hasNext()) {
+                String[] data = file.nextLine().split(" ");
+                for (int i = 0; i < data.length; i++) {
+                    if (isInteger(data[i])) this.hasGold = true;
+                    this.map[row][i] = String.valueOf(data[i]).toUpperCase();
                 }
                 row++;
             }
             file.close();
-
             this.init();
         } catch (FileNotFoundException e) {
             System.out.println("File not found.");
@@ -868,13 +876,30 @@ public class TheGreedyGnome {
 //        gnome5.displayMap(map5);
 //        gnome5.getBestPath();
 
-        TheGreedyGnome gnome6 = new TheGreedyGnome("map1.txt");
-        gnome6.getBestPath();
+//        TheGreedyGnome gnome6 = new TheGreedyGnome("map2.txt");
+//        gnome6.getBestPath();
+
+        try {
+//            new TheGreedyGnome("maps/2_21.txt");
+//            new TheGreedyGnome("maps/3_3.txt");
+            new TheGreedyGnome("maps/10_10.txt");
+//            new TheGreedyGnome("maps/12_23.txt");
+//            new TheGreedyGnome("maps/17_1.txt");
+//            new TheGreedyGnome("maps/19_13.txt");
+//            new TheGreedyGnome("maps/25_8.txt");
+//            new TheGreedyGnome("maps/26_26.txt");
+//            new TheGreedyGnome("maps/27_27.txt");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
 
         // get finish time and calculate processing time
         long finish = System.nanoTime();
         long timeElapsed = finish - start;
-        System.out.println("Processing time: " + timeElapsed/1000000 + " milliseconds.");
+//        System.out.println("Processing time: " + timeElapsed + " nanoseconds.");
+        System.out.println("Processing time: " + timeElapsed/1000 + " microseconds.");
+//        System.out.println("Processing time: " + timeElapsed/1000000 + " milliseconds.");
 
         long afterUsedMem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         long actualMemUsed = afterUsedMem - beforeUsedMem;
