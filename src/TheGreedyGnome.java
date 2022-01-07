@@ -564,8 +564,8 @@ public class TheGreedyGnome {
 
     // add all reachable gold locations
     private void getAllGoldLocations() {
-        for (int i = this.y; i < this.rowCount; i++) {
-            for (int j = this.x; j < this.colCount; j++) {
+        for (int i = 0; i < this.rowCount; i++) {
+            for (int j = 0; j < this.colCount; j++) {
                 if (!isInteger(this.map[i][j]) || i == 0 && j == 0) continue;
 
                 // blocked by rocks on both left and upper sides, unreachable, skip gold pos
