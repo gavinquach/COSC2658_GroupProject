@@ -19,8 +19,8 @@ public class TheGreedyGnome {
     public int goldGathered = 0;
     public int steps = 0;
     public String[][] map;
-    public int row_count;
-    public int col_count;
+    public int rowCount;
+    public int colCount;
     public String[][] path;
     public boolean[][] visited;
     public String stepsText = "";
@@ -48,8 +48,8 @@ public class TheGreedyGnome {
     // initiate arrays and other stuff
     private void init() {
         try {
-            this.path = new String[this.row_count][this.col_count];
-            this.visited = new boolean[this.row_count][this.col_count];
+            this.path = new String[this.rowCount][this.colCount];
+            this.visited = new boolean[this.rowCount][this.colCount];
             this.gnomePath = new GnomePath();
 
             for (String[] rows : this.path) Arrays.fill(rows, ".");
@@ -88,10 +88,10 @@ public class TheGreedyGnome {
     }
 
 //    // constructor for testing
-//    public TheGreedyGnome(String[][] map, final int row_count, final int col_count) {
+//    public TheGreedyGnome(String[][] map, final int rowCount, final int colCount) {
 //        this.map = map;
-//        this.row_count = row_count;
-//        this.col_count = col_count;
+//        this.rowCount = rowCount;
+//        this.colCount = colCount;
 //
 //        this.init();
 //    }
@@ -114,9 +114,9 @@ public class TheGreedyGnome {
                 System.out.println("Invalid row and column values.");
                 throw new Exception("Invalid row and column values.");
             } else {
-                this.row_count = Integer.parseInt(row_col.split(" ")[0]);
-                this.col_count = Integer.parseInt(row_col.split(" ")[1]);
-                this.map = new String[this.row_count][this.col_count];
+                this.rowCount = Integer.parseInt(row_col.split(" ")[0]);
+                this.colCount = Integer.parseInt(row_col.split(" ")[1]);
+                this.map = new String[this.rowCount][this.colCount];
             }
 
             int row = 0;
@@ -144,7 +144,7 @@ public class TheGreedyGnome {
 
     // check whether given coordinate (x, y) is a valid coordinate or not.
     private boolean isValidPos(int x, int y) {
-        if (x < 0 || x >= col_count || y < 0 || y >= row_count) {
+        if (x < 0 || x >= colCount || y < 0 || y >= rowCount) {
             return false;
         }
         return !this.map[y][x].equals("X");
@@ -369,7 +369,7 @@ public class TheGreedyGnome {
 //        }
 //
 //        // can't move anymore if gnome is at the bottom right of the map
-//        if (this.y >= row_count - 1 && this.x >= col_count - 1) {
+//        if (this.y >= rowCount - 1 && this.x >= colCount - 1) {
 //            this.isStuck = true;
 //            return false;
 //        }
@@ -523,10 +523,10 @@ public class TheGreedyGnome {
 //        boolean noGold = true;
 //
 //        // scan each row from top to bottom, column left to right
-//        for (int i = this.y; i < this.row_count; i++) {
+//        for (int i = this.y; i < this.rowCount; i++) {
 //            if (!rowHasGold(i)) continue;
 //
-//            for (int j = this.x; j < this.col_count; j++) {
+//            for (int j = this.x; j < this.colCount; j++) {
 ////                System.out.println("Searching x = " + j + ", y = " + i);
 //                if (isInteger(this.map[i][j]) && !this.unreachable[i][j] && !(j == this.x && i == this.y)) {
 //                    noGold = false;
@@ -542,7 +542,7 @@ public class TheGreedyGnome {
 //    // return true if row has gold
 //    // return false otherwise
 //    private boolean rowHasGold(final int row) {
-//        for (int i = 0; i < this.col_count; i++)
+//        for (int i = 0; i < this.colCount; i++)
 //            if (isInteger(this.map[row][i]) && (i != this.x || row != this.y))
 //                return true;
 //        return false;
@@ -550,8 +550,8 @@ public class TheGreedyGnome {
 
     // display path taken by the gnome
     public void displayPath() {
-        for (int i = 0; i < this.row_count; i++) {
-            for (int j = 0; j < this.col_count; j++) {
+        for (int i = 0; i < this.rowCount; i++) {
+            for (int j = 0; j < this.colCount; j++) {
                 if (this.path[i][j].equals("+") || this.path[i][j].equals("G") ) {
                     System.out.print(this.path[i][j] + " ");
                 } else {
@@ -565,8 +565,8 @@ public class TheGreedyGnome {
     // add all reachable gold locations
     private ArrayList<Coordinate> getAllGoldLocations() {
         ArrayList<Coordinate> arr = new ArrayList<>();
-        for (int i = this.y; i < this.row_count; i++) {
-            for (int j = this.x; j < this.col_count; j++) {
+        for (int i = this.y; i < this.rowCount; i++) {
+            for (int j = this.x; j < this.colCount; j++) {
                 if (!isInteger(this.map[i][j]) || i == 0 && j == 0) continue;
 
                 // blocked by rocks on both left and upper sides, unreachable, skip gold pos
@@ -656,7 +656,7 @@ public class TheGreedyGnome {
         // traverse through each stored combination and store the best total
         // gold with the least steps and index of path in list
         int bestTotalGold = 0;
-        int bestTotalSteps = this.row_count+this.col_count;
+        int bestTotalSteps = this.rowCount+this.colCount;
         int bestPath = 0;
 
         // loop through all paths
@@ -672,7 +672,7 @@ public class TheGreedyGnome {
             // if we have path that has more total gold or equal amount of gold but fewer steps needed, update best path
             if (bestTotalGold < this.goldGathered || bestTotalGold == this.goldGathered && bestTotalSteps > this.steps) {
                 bestTotalGold = 0;
-                bestTotalSteps = this.row_count+this.col_count;
+                bestTotalSteps = this.rowCount+this.colCount;
                 bestPath = 0;
                 while (bestTotalGold < this.goldGathered) bestTotalGold++;
                 while (bestTotalSteps > this.steps) bestTotalSteps--;
