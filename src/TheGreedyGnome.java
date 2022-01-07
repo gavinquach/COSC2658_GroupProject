@@ -34,7 +34,7 @@ public class TheGreedyGnome {
     ArrayList<Coordinate> goldLocations = new ArrayList<>();
 
     // list of all possible combinations of paths of all gold coordinates
-    ArrayList<GnomePath> possibleGoldPaths = new ArrayList<>();
+    ArrayList<GnomePath> allPossibleGoldPaths = new ArrayList<>();
 
     public static boolean isInteger(String str) {
         try {
@@ -619,7 +619,7 @@ public class TheGreedyGnome {
         }
 
         // try all possible combinations of paths with the gold coordinates and
-        // store all the possible paths in this.possibleGoldPaths array, which is a list
+        // store all the possible paths in this.allPossibleGoldPaths array, which is a list
         // of lists of coordinates.
         if (this.goldLocations.size() > 2) {
             this.getAllPossiblePaths();
@@ -630,7 +630,7 @@ public class TheGreedyGnome {
 
                 if (isReachable(0, 0, x, y)) {
                     GnomePath gnomePath = new GnomePath(x, y);
-                    this.possibleGoldPaths.add(gnomePath);
+                    this.allPossibleGoldPaths.add(gnomePath);
                 }
             }
         }
@@ -639,15 +639,15 @@ public class TheGreedyGnome {
         for (Coordinate goldLocation : this.goldLocations) {
             GnomePath temp = new GnomePath();
             temp.add(goldLocation);
-            this.possibleGoldPaths.add(temp);
+            this.allPossibleGoldPaths.add(temp);
         }
 
 //        // Print possible gold paths list for debugging
 //        System.out.println("---------------------");
-//        System.out.println("Possible gold path list size: " + this.possibleGoldPaths.size());
+//        System.out.println("Possible gold path list size: " + this.allPossibleGoldPaths.size());
 //        System.out.println("possibleGoldPaths: ");
-//        for (int i = 0; i < this.possibleGoldPaths.size(); i++) {
-//            System.out.println(this.possibleGoldPaths.get(i));
+//        for (int i = 0; i < this.allPossibleGoldPaths.size(); i++) {
+//            System.out.println(this.allPossibleGoldPaths.get(i));
 //        }
 //        System.out.println("---------------------");
 
@@ -658,14 +658,14 @@ public class TheGreedyGnome {
         int bestPath = 0;
 
         // loop through all paths
-        for (int i = 0; i < this.possibleGoldPaths.size(); i++) {
+        for (int i = 0; i < this.allPossibleGoldPaths.size(); i++) {
             // nagivate through the path
             reset();
-            for (int j = 0; j < this.possibleGoldPaths.get(i).size(); j++) {
-                this.goTo(this.possibleGoldPaths.get(i).get(j).getX(), this.possibleGoldPaths.get(i).get(j).getY());
+            for (int j = 0; j < this.allPossibleGoldPaths.get(i).size(); j++) {
+                this.goTo(this.allPossibleGoldPaths.get(i).get(j).getX(), this.allPossibleGoldPaths.get(i).get(j).getY());
             }
 
-//            System.out.printf("Path's gold %d, steps %d, path: %s\n", this.goldGathered, this.steps, this.possibleGoldPaths.get(i));
+//            System.out.printf("Path's gold %d, steps %d, path: %s\n", this.goldGathered, this.steps, this.allPossibleGoldPaths.get(i));
 
             // if we have path that has more total gold or equal amount of gold but fewer steps needed, update best path
             if (bestTotalGold < this.goldGathered || bestTotalGold == this.goldGathered && bestTotalSteps > this.steps) {
@@ -675,19 +675,19 @@ public class TheGreedyGnome {
                 while (bestTotalGold < this.goldGathered) bestTotalGold++;
                 while (bestTotalSteps > this.steps) bestTotalSteps--;
                 while (bestPath < i) bestPath++;
-//                System.out.printf("Best path found, gold %d, steps %d, path: %s\n", bestTotalGold, bestTotalSteps, this.possibleGoldPaths.get(bestPath));
+//                System.out.printf("Best path found, gold %d, steps %d, path: %s\n", bestTotalGold, bestTotalSteps, this.allPossibleGoldPaths.get(bestPath));
             }
 //            System.out.println("------------------");
         }
 
-//        System.out.printf("Best path: index %d, gold %d, steps %d, path: %s\n", bestPath, bestTotalGold, bestTotalSteps, this.possibleGoldPaths.get(bestPath));
+//        System.out.printf("Best path: index %d, gold %d, steps %d, path: %s\n", bestPath, bestTotalGold, bestTotalSteps, this.allPossibleGoldPaths.get(bestPath));
 
         // reset and traverse through the best path and print the results
         reset();
-        for (int i = 0; i < this.possibleGoldPaths.get(bestPath).size(); i++) {
-            for (int j = 0; j < this.possibleGoldPaths.get(bestPath).size(); j++) {
-                int x = this.possibleGoldPaths.get(bestPath).get(j).getX();
-                int y = this.possibleGoldPaths.get(bestPath).get(j).getY();
+        for (int i = 0; i < this.allPossibleGoldPaths.get(bestPath).size(); i++) {
+            for (int j = 0; j < this.allPossibleGoldPaths.get(bestPath).size(); j++) {
+                int x = this.allPossibleGoldPaths.get(bestPath).get(j).getX();
+                int y = this.allPossibleGoldPaths.get(bestPath).get(j).getY();
                 this.goTo(x, y);
             }
         }
@@ -695,51 +695,43 @@ public class TheGreedyGnome {
     }
 
     private void getAllPossiblePaths() {
+        ArrayList<GnomePath> possibleGoldPaths = new ArrayList<>();
+
         for (int i = 0; i < this.goldLocations.size() ; i++) {
-            int firstCyclePosX = this.goldLocations.get(i).getX();
-            int firstCyclePosY = this.goldLocations.get(i).getY();
-//            System.out.printf("i: = %d, %d %d\n", i, firstCyclePosX, firstCyclePosY);
-
-            if (!isReachable(0, 0, firstCyclePosX, firstCyclePosY)) {
-//                    System.out.printf("can't go to coordinate j %d %d\n", secondCyclePosX, secondCyclePosY);
-                continue;
-            }
-
+            Coordinate coord1 = this.goldLocations.get(i);
             for (int j = i + 1; j < this.goldLocations.size() ; j++) {
-                int secondCyclePosX = this.goldLocations.get(j).getX();
-                int secondCyclePosY = this.goldLocations.get(j).getY();
-//                System.out.printf("j: = %d, %d %d\n", j, secondCyclePosX, secondCyclePosY);
+                Coordinate coord2 = this.goldLocations.get(j);
 
-                if (!isReachable(firstCyclePosX, firstCyclePosY, secondCyclePosX, secondCyclePosY)) {
+                if (!isReachable(coord1.getX(), coord1.getY(), coord2.getX(), coord2.getY())) {
 //                    System.out.printf("can't go to coordinate j %d %d\n", secondCyclePosX, secondCyclePosY);
                     continue;
                 }
 
-                GnomePath tempList = new GnomePath();
-                tempList.add(firstCyclePosX, firstCyclePosY);
-                tempList.add(secondCyclePosX, secondCyclePosY);
-//                System.out.println("tempList: " + tempList);
-                this.possibleGoldPaths.add(tempList);
+                GnomePath temp = new GnomePath();
+                temp.add(coord1);
+                temp.add(coord2);
+//                System.out.println("temp: " + temp);
+                possibleGoldPaths.add(temp);
             }
         }
 
 //        // Print possible gold paths list for debugging
 //        System.out.println("---------------------");
-//        System.out.println("Possible gold path list size: " + this.possibleGoldPaths.size());
+//        System.out.println("Possible gold path list size: " + this.allPossibleGoldPaths.size());
 //        System.out.println("possibleGoldPaths: ");
-//        for (int i = 0; i < this.possibleGoldPaths.size(); i++) {
-//            System.out.println(this.possibleGoldPaths.get(i));
+//        for (int i = 0; i < this.allPossibleGoldPaths.size(); i++) {
+//            System.out.println(this.allPossibleGoldPaths.get(i));
 //        }
 //        System.out.println("---------------------");
 
 
         ArrayList<GnomePath> pathList = new ArrayList<>();
 
-        for (GnomePath possibleGoldPath : this.possibleGoldPaths) {
+        for (GnomePath path : possibleGoldPaths) {
             ArrayList<GnomePath> tempList = new ArrayList<>();
             GnomePath tempPath = new GnomePath();
-            for (int j = 0; j < possibleGoldPath.size(); j++) {
-                tempPath.add(possibleGoldPath.get(j));
+            for (int j = 0; j < path.size(); j++) {
+                tempPath.add(path.get(j));
             }
             tempList.add(tempPath);
             combineAllPaths(tempList);
@@ -755,8 +747,7 @@ public class TheGreedyGnome {
 //        }
 //        System.out.println("---------------------");
 
-        this.possibleGoldPaths.clear();
-        this.possibleGoldPaths.addAll(pathList);
+        this.allPossibleGoldPaths.addAll(pathList);
     }
 
     // combine all possible paths
@@ -767,7 +758,7 @@ public class TheGreedyGnome {
 
         // go through the list and check if the coordinate has
         // coordinates it can go to
-        for (GnomePath possibleGoldPath : this.possibleGoldPaths) {
+        for (GnomePath possibleGoldPath : this.allPossibleGoldPaths) {
             if (possibleGoldPath.get(0).equals(currentCoord)) {
                 // create a new list of coordinate with new
                 // reachable coordinate added and repeat for all the
@@ -793,7 +784,7 @@ public class TheGreedyGnome {
             currentCoord = list.get(currentIndex).get(list.get(currentIndex).size() - 1);
 
             boolean hasExtraPaths = false;
-            for (GnomePath possibleGoldPath : this.possibleGoldPaths) {
+            for (GnomePath possibleGoldPath : this.allPossibleGoldPaths) {
                 if (possibleGoldPath.get(0).equals(currentCoord)) {
                     hasExtraPaths = true;
                     GnomePath tempPath = new GnomePath();
