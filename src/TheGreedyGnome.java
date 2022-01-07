@@ -26,7 +26,6 @@ public class TheGreedyGnome {
     public String stepsText = "";
 //    public boolean isStuck = false;
     public GnomePath gnomePath;
-    private boolean hasGold;
 
     // down or right directions only
     private static final int[][] DIRECTIONS = { { 0, 1 }, { 1, 0 } };
@@ -88,24 +87,18 @@ public class TheGreedyGnome {
         this.visited[this.y][this.x] = true;
     }
 
-    // constructor for testing
-    public TheGreedyGnome(String[][] map, final int row_count, final int col_count) {
-        this.map = map;
-        this.row_count = row_count;
-        this.col_count = col_count;
-
-        this.init();
-    }
+//    // constructor for testing
+//    public TheGreedyGnome(String[][] map, final int row_count, final int col_count) {
+//        this.map = map;
+//        this.row_count = row_count;
+//        this.col_count = col_count;
+//
+//        this.init();
+//    }
 
     // actual constructor
     public TheGreedyGnome(String filename) {
         this.readMap(filename);
-        if (this.hasGold) {
-            this.init();
-            this.getBestPath();
-        } else {
-            System.out.println("No gold found in map!");
-        }
     }
 
     // open mine map file, validate the data, then create array of the map
@@ -124,23 +117,26 @@ public class TheGreedyGnome {
                 this.map = new String[this.row_count][this.col_count];
             }
 
-            this.hasGold = false;
             int row = 0;
             while (file.hasNext()) {
                 String[] data = file.nextLine().split(" ");
-                for (int i = 0; i < data.length; i++) {
-                    if (isInteger(data[i])) this.hasGold = true;
-                    this.map[row][i] = String.valueOf(data[i]).toUpperCase();
+                 for (int col = 0; col < data.length; col++) {
+                    this.map[row][col] = String.valueOf(data[col]).toUpperCase();
                 }
                 row++;
             }
             file.close();
+
             this.init();
+            this.getBestPath();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Discrepancy between row/col value and actual map row/col count detected, program aborts.");
+//            e.printStackTrace();
         } catch (FileNotFoundException e) {
             System.out.println("File not found.");
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
