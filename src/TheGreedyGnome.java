@@ -563,8 +563,7 @@ public class TheGreedyGnome {
     }
 
     // add all reachable gold locations
-    private ArrayList<Coordinate> getAllGoldLocations() {
-        ArrayList<Coordinate> arr = new ArrayList<>();
+    private void getAllGoldLocations() {
         for (int i = this.y; i < this.rowCount; i++) {
             for (int j = this.x; j < this.colCount; j++) {
                 if (!isInteger(this.map[i][j]) || i == 0 && j == 0) continue;
@@ -585,10 +584,9 @@ public class TheGreedyGnome {
                 if (!isReachable(0, 0, j, i)) {
                     continue;
                 }
-                arr.add(new Coordinate(j, i));
+                this.goldLocations.add(new Coordinate(j, i));
             }
         }
-        return arr;
     }
 
     public void printResults() {
@@ -607,7 +605,7 @@ public class TheGreedyGnome {
     // function tha gest best path for gnome
     private void getBestPath() {
         // get all reachable gold locations
-        this.goldLocations = getAllGoldLocations();
+        this.getAllGoldLocations();
 
 //        // print all gold coordinates for debugging
 //        System.out.println("================");
