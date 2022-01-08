@@ -598,12 +598,11 @@ public class TheGreedyGnome {
         System.out.println();
         System.out.println("================");
         System.out.println("RESULTS:");
-        System.out.println("Path taken:");
-        displayPath();
+        // System.out.println("Path taken:");
+        // displayPath();
         System.out.println("Steps: " + this.steps);
         System.out.println("Gold gathered: " + this.goldGathered);
         System.out.println(this.stepsText.isEmpty() ? "Steps taken: None" : "Steps taken: " + this.stepsText);
-        System.out.println();
         System.out.println("=====================================");
     }
 
@@ -825,7 +824,7 @@ public class TheGreedyGnome {
         long start = System.nanoTime();
         long beforeUsedMem=Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         try {
-            new TheGreedyGnomeTri(filename);
+            new TheGreedyGnome(filename);
 //            new TheGreedyGnome("maps/2_21.txt");
 //            new TheGreedyGnome("maps/3_3.txt");
 //            new TheGreedyGnome("maps/10_10.txt");
