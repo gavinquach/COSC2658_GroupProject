@@ -752,36 +752,9 @@ public class TheGreedyGnome {
 
     // combine all possible paths
     private void combineAllPaths(ArrayList<GnomePath> list) {
-        // current coordinate is the 2nd coordinate in the list
-        // or the coordinate that is reachable from the first coordinate in list
-        Coordinate currentCoord = list.get(0).get(list.get(0).size() - 1);
-
-        // go through the list and check if the coordinate has
-        // coordinates it can go to
-        for (GnomePath possibleGoldPath : this.allPossibleGoldPaths) {
-            if (possibleGoldPath.get(0).equals(currentCoord)) {
-                // create a new list of coordinate with new
-                // reachable coordinate added and repeat for all the
-                // found reachable coordinates
-                GnomePath tempPath = new GnomePath();
-                for (int i = 0; i < list.get(0).size(); i++) {
-                    tempPath.add(list.get(0).get(i));
-                }
-                tempPath.add(possibleGoldPath.get(1));
-
-                // add new path to all-possible-paths list
-                list.add(tempPath);
-            }
-        }
-
-        // finished adding the new paths, remove
-        // old path
-        list.remove(0);
-
-        // repeat the function above but with the newly added paths from above
         int currentIndex = 0;
         while (currentIndex != list.size()) {
-            currentCoord = list.get(currentIndex).get(list.get(currentIndex).size() - 1);
+            Coordinate currentCoord = list.get(currentIndex).get(list.get(currentIndex).size() - 1);
 
             boolean hasExtraPaths = false;
             for (GnomePath possibleGoldPath : this.allPossibleGoldPaths) {
