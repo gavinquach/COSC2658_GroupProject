@@ -703,26 +703,15 @@ public class TheGreedyGnome {
                 Coordinate coord2 = this.goldLocations.get(j);
 
                 if (!isReachable(coord1.getX(), coord1.getY(), coord2.getX(), coord2.getY())) {
-//                    System.out.printf("can't go to coordinate j %d %d\n", secondCyclePosX, secondCyclePosY);
                     continue;
                 }
 
                 GnomePath temp = new GnomePath();
                 temp.add(coord1);
                 temp.add(coord2);
-//                System.out.println("temp: " + temp);
                 possibleGoldPaths.add(temp);
             }
         }
-
-//        // Print possible gold paths list for debugging
-//        System.out.println("---------------------");
-//        System.out.println("Possible gold path list size: " + this.allPossibleGoldPaths.size());
-//        System.out.println("possibleGoldPaths: ");
-//        for (int i = 0; i < this.allPossibleGoldPaths.size(); i++) {
-//            System.out.println(this.allPossibleGoldPaths.get(i));
-//        }
-//        System.out.println("---------------------");
 
         for (GnomePath path : possibleGoldPaths) {
             ArrayList<GnomePath> tempList = new ArrayList<>();
@@ -734,15 +723,6 @@ public class TheGreedyGnome {
             combineAllPaths(tempList);
             this.allPossibleGoldPaths.addAll(tempList);
         }
-
-//        // Print all possible gold paths list for debugging
-//        System.out.println("---------------------");
-//        System.out.println("pathList size: " + pathList.size());
-//        System.out.println("pathList: ");
-//        for (int i = 0; i < pathList.size(); i++) {
-//            System.out.println(pathList.get(i));
-//        }
-//        System.out.println("---------------------");
     }
 
     // combine all possible paths
