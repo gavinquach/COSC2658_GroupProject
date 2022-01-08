@@ -724,9 +724,6 @@ public class TheGreedyGnome {
 //        }
 //        System.out.println("---------------------");
 
-
-        ArrayList<GnomePath> pathList = new ArrayList<>();
-
         for (GnomePath path : possibleGoldPaths) {
             ArrayList<GnomePath> tempList = new ArrayList<>();
             GnomePath tempPath = new GnomePath();
@@ -735,7 +732,7 @@ public class TheGreedyGnome {
             }
             tempList.add(tempPath);
             combineAllPaths(tempList);
-            pathList.addAll(tempList);
+            this.allPossibleGoldPaths.addAll(tempList);
         }
 
 //        // Print all possible gold paths list for debugging
@@ -746,8 +743,6 @@ public class TheGreedyGnome {
 //            System.out.println(pathList.get(i));
 //        }
 //        System.out.println("---------------------");
-
-        this.allPossibleGoldPaths.addAll(pathList);
     }
 
     // combine all possible paths
