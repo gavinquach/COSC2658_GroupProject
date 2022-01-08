@@ -717,32 +717,34 @@ public class TheGreedyGnome {
                 tempPath.add(path.get(j));
             }
             tempList.add(tempPath);
-            combineAllPaths(tempList);
-            this.allPossibleGoldPaths.addAll(tempList);
-        }
-    }
 
-    // combine all possible paths
-    private void combineAllPaths(ArrayList<GnomePath> list) {
-        int currentIndex = 0;
-        while (currentIndex != list.size()) {
-            Coordinate currentCoord = list.get(currentIndex).get(list.get(currentIndex).size() - 1);
-
-            boolean hasExtraPaths = false;
-            for (GnomePath possibleGoldPath : this.allPossibleGoldPaths) {
-                if (possibleGoldPath.get(0).equals(currentCoord)) {
-                    hasExtraPaths = true;
-                    GnomePath tempPath = new GnomePath();
-                    for (int i = 0; i < list.get(currentIndex).size(); i++) {
-                        tempPath.add(list.get(currentIndex).get(i));
+            int currentIndex = 0;
+            while (currentIndex != tempList.size()) {
+                // get the last coordinate in path
+                Coordinate currentCoord = tempList.get(currentIndex).get(tempList.get(currentIndex).size() - 1);
+    
+                boolean hasExtraPaths = false;
+                // loop through all paths
+                for (GnomePath possibleGoldPath : possibleGoldPaths) {
+                    // if last coordinate has more path options, 
+                    // add the new coordinate to current path, add that 
+                    // new path to list, and remove old path from list
+                    if (possibleGoldPath.get(0).equals(currentCoord)) {
+                        hasExtraPaths = true;
+                        GnomePath temp = new GnomePath();
+                        for (int i = 0; i < tempList.get(currentIndex).size(); i++) {
+                            temp.add(tempList.get(currentIndex).get(i));
+                        }
+                        temp.add(possibleGoldPath.get(1));
+                        tempList.add(temp);
                     }
-                    tempPath.add(possibleGoldPath.get(1));
-                    list.add(tempPath);
                 }
+    
+                if (hasExtraPaths) tempList.remove(currentIndex);
+                else currentIndex++;
             }
 
-            if (hasExtraPaths) list.remove(currentIndex);
-            else currentIndex++;
+            this.allPossibleGoldPaths.addAll(tempList);
         }
     }
 
