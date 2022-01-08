@@ -25,7 +25,6 @@ public class TheGreedyGnome {
     public boolean[][] visited;
     public String stepsText = "";
 //    public boolean isStuck = false;
-    public GnomePath gnomePath;
 
     // down or right directions only
     private static final int[][] DIRECTIONS = { { 0, 1 }, { 1, 0 } };
@@ -50,7 +49,6 @@ public class TheGreedyGnome {
         try {
             this.path = new String[this.rowCount][this.colCount];
             this.visited = new boolean[this.rowCount][this.colCount];
-            this.gnomePath = new GnomePath();
 
             for (String[] rows : this.path) Arrays.fill(rows, ".");
 
@@ -210,6 +208,13 @@ public class TheGreedyGnome {
             }
         }
         return false;
+    }
+
+    // travel through a list of coordinates
+    public void travel(GnomePath path) {
+        for (int i = 0; i < path.size(); i++) {
+            this.goTo(path.get(i).getX(), path.get(i).getY());
+        }
     }
 
     // use breadth-first search to go to coordinate from current coordinate
@@ -661,9 +666,7 @@ public class TheGreedyGnome {
         for (int i = 0; i < this.allPossibleGoldPaths.size(); i++) {
             // nagivate through the path
             reset();
-            for (int j = 0; j < this.allPossibleGoldPaths.get(i).size(); j++) {
-                this.goTo(this.allPossibleGoldPaths.get(i).get(j).getX(), this.allPossibleGoldPaths.get(i).get(j).getY());
-            }
+            this.travel(this.allPossibleGoldPaths.get(i));
 
 //            System.out.printf("Path's gold %d, steps %d, path: %s\n", this.goldGathered, this.steps, this.allPossibleGoldPaths.get(i));
 
@@ -684,13 +687,7 @@ public class TheGreedyGnome {
 
         // reset and traverse through the best path and print the results
         reset();
-        for (int i = 0; i < this.allPossibleGoldPaths.get(bestPath).size(); i++) {
-            for (int j = 0; j < this.allPossibleGoldPaths.get(bestPath).size(); j++) {
-                int x = this.allPossibleGoldPaths.get(bestPath).get(j).getX();
-                int y = this.allPossibleGoldPaths.get(bestPath).get(j).getY();
-                this.goTo(x, y);
-            }
-        }
+        this.travel(this.allPossibleGoldPaths.get(bestPath));
         this.printResults();
     }
 
